@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <img height="300" src="${movie.image}" class="card-img-top" alt="${movie.title}" />
           <div class="card-body">
             <h5 class="card-title">${movie.title}</h5>
-            <a href="#" class="btn text-white btn-warning" onclick="openTrailer('${movie.trailer}')">Details</a>
+            <a href="#" class="btn text-white btn-warning" onclick="openTrailer('${movie.trailer}')">Trailer</a>
           </div>
         </div>
       `;
