@@ -1,48 +1,58 @@
 document.addEventListener("DOMContentLoaded", function () {
+  const movieContainer = document.getElementById("movieContainer");
   const prevBtn = document.getElementById("prevBtn");
   const nextBtn = document.getElementById("nextBtn");
 
   const itemsPerPage = 4;
   let currentPage = 1;
 
-  function updateCards() {
-    const movieCards = document.querySelectorAll(".movie-card");
-    const totalPages = Math.ceil(movieCards.length / itemsPerPage);
+  function renderMovies() {
+    movieContainer.innerHTML = "";
+
     const start = (currentPage - 1) * itemsPerPage;
     const end = start + itemsPerPage;
+    const currentMovies = movies.slice(start, end);
 
-    movieCards.forEach((card, index) => {
-      if (index >= start && index < end) {
-        card.style.display = "block"; // Explicitly set to block
-      } else {
-        card.style.display = "none"; // Explicitly set to none
-      }
+    currentMovies.forEach((movie) => {
+      const card = document.createElement("div");
+      card.className = "col-md-3 movie-card";
+      card.innerHTML = `
+        <div class="card mt-3">
+          <img height="300" src="${movie.image}" class="card-img-top" alt="${movie.title}" />
+          <div class="card-body">
+            <h5 class="card-title">${movie.title}</h5>
+            <a href="#" class="btn text-white btn-warning" onclick="openTrailer('${movie.trailer}')">Details</a>
+          </div>
+        </div>
+      `;
+      movieContainer.appendChild(card);
     });
 
-    // Update button state
-    prevBtn.disabled = currentPage === 1;
-    nextBtn.disabled = currentPage >= totalPages;
+    updateButtons();
   }
 
-  prevBtn?.addEventListener("click", () => {
+  function updateButtons() {
+    const totalPages = Math.ceil(movies.length / itemsPerPage);
+    prevBtn.disabled = currentPage === 1;
+    nextBtn.disabled = currentPage === totalPages;
+  }
+
+  prevBtn.addEventListener("click", () => {
     if (currentPage > 1) {
       currentPage--;
-      updateCards();
+      renderMovies();
     }
   });
 
-  nextBtn?.addEventListener("click", () => {
-    const movieCards = document.querySelectorAll(".movie-card");
-    const totalPages = Math.ceil(movieCards.length / itemsPerPage);
-
+  nextBtn.addEventListener("click", () => {
+    const totalPages = Math.ceil(movies.length / itemsPerPage);
     if (currentPage < totalPages) {
       currentPage++;
-      updateCards();
+      renderMovies();
     }
   });
 
-  // Panggil updateCards di awal
-  updateCards();
+  renderMovies();
 });
 
 // Loader
